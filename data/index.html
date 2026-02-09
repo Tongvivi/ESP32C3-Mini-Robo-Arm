@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+/>
+    <title>桌面机械臂控制台</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 第1行: 状态栏 -->
+    <div class="status-bar" id="statusBar">
+        <div class="status-indicator" id="statusIndicator">🔴 离线</div>
+        <div data-i18n="title.app">桌面机械臂控制台</div>
+        <div class="status-right">
+            <div class="status-info">
+                <span><span data-i18n="label.signal">信号</span>: <strong id="signalText">--</strong></span>
+                <span><span data-i18n="label.latency">延迟</span>: <strong id="latencyText">--</strong></span>
+                <span><span data-i18n="label.uptime">运行</span>: <strong id="uptimeText">00:00:00</strong></span>
+            </div>
+            <div class="lang-switch" role="group" aria-label="Language Switch">
+                <button class="lang-btn" data-lang="zh" type="button">中文</button>
+                <button class="lang-btn" data-lang="en" type="button">EN</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+     
+        <div class="control-grid">
+    <!-- 1. TT电机控制 -->
+    <div class="control-card">
+        <h3 data-i18n="card.ttMotor">TT电机控制</h3>
+        <div class="rc-panel">
+            <button class="rc-btn rc-btn-side rc-btn-left" id="motorForward">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
+            </button>
+            <button class="rc-btn rc-btn-center" id="motorStop">
+                <div class="rc-icon rc-stop-box"></div>
+            </button>
+            <button class="rc-btn rc-btn-side rc-btn-right" id="motorReverse">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M12 16l6-6-1.41-1.41L12 13.17 7.41 8.59 6 10z"/></svg>
+            </button>
+        </div>
+        <div class="status-text" id="motorStatus">停止</div>
+    </div>
+
+    <!-- 2. 舵机1 (360度) -->
+    <div class="control-card">
+        <h3 data-i18n="card.servo1">舵机1控制</h3>
+        <div class="rc-panel">
+            <button class="rc-btn rc-btn-side rc-btn-left" id="servo1Reverse">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+            </button>
+            <button class="rc-btn rc-btn-center" id="servo1Stop">
+                <div class="rc-icon rc-stop-box"></div>
+            </button>
+            <button class="rc-btn rc-btn-side rc-btn-right" id="servo1Forward">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M17 17H7v-3l-4 4 4 4v-3h12v-6h-2v4zM7 7h10v3l4-4-4-4v3H5v6h2V7z"/></svg>
+            </button>
+        </div>
+        <div class="status-text" id="servo1Status">停止</div>
+    </div>
+
+    <!-- 3. 舵机2 (360度) -->
+    <div class="control-card">
+        <h3 data-i18n="card.servo2">舵机2控制</h3>
+        <div class="rc-panel">
+            <button class="rc-btn rc-btn-side rc-btn-left" id="servo2Reverse">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+            </button>
+            <button class="rc-btn rc-btn-center" id="servo2Stop">
+                <div class="rc-icon rc-stop-box"></div>
+            </button>
+            <button class="rc-btn rc-btn-side rc-btn-right" id="servo2Forward">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M17 17H7v-3l-4 4 4 4v-3h12v-6h-2v4zM7 7h10v3l4-4-4-4v3H5v6h2V7z"/></svg>
+            </button>
+        </div>
+        <div class="status-text" id="servo2Status">停止</div>
+    </div>
+
+    <!-- 4. 舵机3 (180度) -->
+    <div class="control-card">
+        <h3 data-i18n="card.servo3">舵机3控制</h3>
+        <div class="rc-panel">
+            <button class="rc-btn rc-btn-side rc-btn-left" id="servo3Left">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            </button>
+            <button class="rc-btn rc-btn-center" id="servo3Center">
+                <div class="rc-icon rc-dot-box"></div>
+            </button>
+            <button class="rc-btn rc-btn-side rc-btn-right" id="servo3Right">
+                <svg class="rc-icon rc-arrow-svg" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            </button>
+        </div>
+        <div class="status-text" id="servo3Status">90°</div>
+    </div>
+</div>
+
+        <!-- 第3行: 折叠设置面板 -->
+        <div class="settings-panel">
+            <div class="settings-header" id="settingsToggle">
+                <span class="settings-icon">⚙️</span>
+                <span class="settings-title" data-i18n="settings.title">高级设置</span>
+                <span class="settings-arrow" id="settingsArrow">▼</span>
+            </div>
+            
+            <div class="settings-content" id="settingsContent">
+                <!-- TT电机设置 -->
+                <div class="setting-group">
+                    <h4 data-i18n="settings.ttMotor">TT电机参数</h4>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.speed">速度</span>: <span id="motorSpeedValue">240</span></label>
+                        <input type="range" id="motorSpeed" min="120" max="255" value="240" step="5">
+                        <div class="range-labels">
+                            <span data-i18n="range.slow120">慢(120)</span>
+                            <span data-i18n="range.fast255">快(255)</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.duration">时长</span>: <span id="motorDurationValue">0.1</span><span data-i18n="unit.seconds">秒</span></label>
+                        <input type="range" id="motorDuration" min="0.1" max="5.0" value="0.1" step="0.1">
+                        <div class="range-labels">
+                            <span data-i18n="range.seconds01">0.1s</span>
+                            <span data-i18n="range.seconds50">5.0s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 360度舵机1设置 -->
+                <div class="setting-group">
+                    <h4 data-i18n="settings.servo1">舵机1参数</h4>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.speed">速度</span>: <span id="servo1SpeedValue">130</span></label>
+                        <input type="range" id="servo1Speed" min="30" max="150" value="130" step="1">
+                        <div class="range-labels">
+                            <span data-i18n="range.slow30">慢(30)</span>
+                            <span data-i18n="range.fast150">快(150)</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.duration">时长</span>: <span id="servo1DurationValue">0.1</span><span data-i18n="unit.seconds">秒</span></label>
+                        <input type="range" id="servo1Duration" min="0.1" max="5.0" value="0.1" step="0.1">
+                        <div class="range-labels">
+                            <span data-i18n="range.seconds01">0.1s</span>
+                            <span data-i18n="range.seconds50">5.0s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 360度舵机2设置 -->
+                <div class="setting-group">
+                    <h4 data-i18n="settings.servo2">舵机2参数</h4>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.speed">速度</span>: <span id="servo2SpeedValue">130</span></label>
+                        <input type="range" id="servo2Speed" min="30" max="150" value="130" step="1">
+                        <div class="range-labels">
+                            <span data-i18n="range.slow30">慢(30)</span>
+                            <span data-i18n="range.fast150">快(150)</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.duration">时长</span>: <span id="servo2DurationValue">0.1</span><span data-i18n="unit.seconds">秒</span></label>
+                        <input type="range" id="servo2Duration" min="0.1" max="5.0" value="0.1" step="0.1">
+                        <div class="range-labels">
+                            <span data-i18n="range.seconds01">0.1s</span>
+                            <span data-i18n="range.seconds50">5.0s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 180度舵机设置 -->
+                <div class="setting-group">
+                    <h4 data-i18n="settings.servo3">舵机3参数 (180度)</h4>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.angle">角度</span>: <span id="servo3AngleValue">90</span>°</label>
+                        <input type="range" id="servo3Angle" min="0" max="180" value="90" step="1">
+                        <div class="range-labels">
+                            <span data-i18n="range.angle0">0°</span>
+                            <span data-i18n="range.angle90">90°</span>
+                            <span data-i18n="range.angle180">180°</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label><span data-i18n="label.step">步进角度</span>: <span id="servo3StepValue">30</span>°</label>
+                        <input type="range" id="servo3Step" min="5" max="90" value="30" step="5">
+                        <div class="range-labels">
+                            <span data-i18n="range.angle5">5°</span>
+                            <span data-i18n="range.angle90">90°</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="    display: flex;    justify-content: center;">
+        <div><span data-i18n="footer.text">由 ESP32-C3 驱动 · 由 TonyTang 开发 @ </span><a href="https://gizfolo.com" target="_blank">Gizfolo.com</a></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

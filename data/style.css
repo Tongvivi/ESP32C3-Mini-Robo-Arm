@@ -1,0 +1,725 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #adadad 0%, #827f85 100%);
+    min-height: 100vh;
+    padding: 0;
+    color: #333;
+}
+
+/* ========== 第1行: 状态栏 ========== */
+.status-bar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.status-indicator {
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-online {
+    color: #22c55e;
+}
+
+.status-offline {
+    color: #ef4444;
+}
+
+.status-info {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.status-info span strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* ========== 容器 ========== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    margin: 0 0 20px 0;
+    font-size: 26px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* ========== 第2行: 控制网格 ========== */
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(23%, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.control-card {
+    background: #333;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+}
+
+.control-card:hover {
+    transform: translateY(-2px);
+}
+
+.control-card h3 {
+    text-align: center;
+    color: #667eea;
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* ========== 控制按钮 ========== */
+.control-buttons {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.control-buttons.tt-motor,
+.control-buttons.servo-360,
+.control-buttons.servo-180 {
+    grid-template-columns: repeat(2, 1fr); 
+}
+
+.ctrl-btn {
+    padding: 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 70px;
+}
+
+.ctrl-btn .btn-icon {
+    font-size: 28px;
+}
+
+.ctrl-btn .btn-label {
+    font-size: 16px;
+}
+
+.ctrl-btn:active {
+    transform: scale(0.97);
+}
+
+.ctrl-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* TT电机按钮颜色 */
+.ctrl-forward {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+}
+
+.ctrl-forward:hover:not(:disabled) {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.ctrl-reverse {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.ctrl-reverse:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* 360度舵机按钮颜色 */
+.ctrl-cw {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.ctrl-cw:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d97706, #b45309);
+}
+
+.ctrl-ccw {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: white;
+}
+
+.ctrl-ccw:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0891b2, #0e7490);
+}
+
+/* 180度舵机按钮颜色 */
+.ctrl-left {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+}
+
+.ctrl-left:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+.ctrl-right {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+    color: white;
+}
+
+.ctrl-right:hover:not(:disabled) {
+    background: linear-gradient(135deg, #db2777, #be185d);
+}
+
+.ctrl-center {
+    background: linear-gradient(135deg, #64748b, #475569);
+    color: white;
+}
+
+.ctrl-center:hover:not(:disabled) {
+    background: linear-gradient(135deg, #475569, #334155);
+}
+
+/* 停止按钮 */
+.ctrl-stop {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.ctrl-stop:hover:not(:disabled) {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* 状态文本 */
+.status-text {
+    text-align: center;
+    padding: 10px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* ========== 第3行: 折叠设置面板 ========== */
+.settings-panel {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.settings-header {
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+    transition: background 0.3s;
+}
+
+.settings-header:hover {
+    background: linear-gradient(135deg, #5568d3, #6a3f91);
+}
+
+.settings-icon {
+    font-size: 22px;
+}
+
+.settings-title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.settings-arrow {
+    font-size: 14px;
+    transition: transform 0.3s;
+}
+
+.settings-arrow.expanded {
+    transform: rotate(180deg);
+}
+
+.settings-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.settings-content.expanded {
+    max-height: 2000px;
+}
+
+/* 设置组 */
+.setting-group {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.setting-group:last-child {
+    border-bottom: none;
+}
+
+.setting-group h4 {
+    color: #667eea;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.setting-item {
+    margin-bottom: 20px;
+}
+
+.setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.setting-item label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+.setting-item label span {
+    color: #667eea;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+/* 滑块样式 */
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 10px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.5);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.5);
+}
+
+input[type="range"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* ========== 响应式设计 ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    
+    .control-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .status-bar {
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px 15px;
+    }
+    
+    .status-info {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 12px;
+        gap: 10px;
+    }
+    
+    .ctrl-btn {
+        min-height: 65px;
+        padding: 15px;
+    }
+    
+    .ctrl-btn .btn-icon {
+        font-size: 24px;
+    }
+    
+    .ctrl-btn .btn-label {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ctrl-btn .btn-label {
+        display: none;
+    }
+    
+    .ctrl-btn .btn-icon {
+        font-size: 32px;
+    }
+    
+    .status-info span {
+        font-size: 11px;
+    }
+}
+
+/* ========== 横屏优化 (手机横屏时4列布局) ========== */
+@media (orientation: landscape) and (max-width: 926px) {
+    /* 强制4列布局 */
+    .control-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    /* 缩小卡片内边距 */
+    .control-card {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    /* 缩小标题 */
+    .control-card h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+    }
+    
+    /* 缩小按钮间距 */
+    .control-buttons {
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+    
+    /* 缩小普通按钮 */
+    .ctrl-btn {
+        padding: 10px 8px;
+        min-height: 50px;
+        border-radius: 8px;
+    }
+    
+    /* 缩小按钮图标 */
+    .ctrl-btn .btn-icon {
+        font-size: 20px;
+    }
+    
+    /* 缩小按钮文字 */
+    .ctrl-btn .btn-label {
+        font-size: 13px;
+    }
+    
+    /* 停止按钮特殊处理 - 更小 */
+    .ctrl-stop {
+        padding: 6px;
+        min-height: 42px;
+    }
+    
+    .ctrl-stop .btn-icon {
+        font-size: 16px;
+    }
+    
+    .ctrl-stop .btn-label {
+        font-size: 11px;
+    }
+    
+    /* 缩小状态文本 */
+    .status-text {
+        padding: 6px;
+        font-size: 12px;
+        border-radius: 6px;
+    }
+    
+    /* 缩小状态栏 */
+    .status-bar {
+        padding: 8px 15px;
+    }
+    
+    .status-indicator {
+        font-size: 14px;
+    }
+    
+    .status-info {
+        font-size: 11px;
+        gap: 10px;
+    }
+    
+    /* 缩小标题 */
+    h1 {
+        font-size: 20px;
+        margin: 10px 0 15px 0;
+    }
+    
+    /* 缩小设置面板标题 */
+    .settings-header {
+        padding: 12px 15px;
+    }
+    
+    .settings-icon {
+        font-size: 18px;
+    }
+    
+    .settings-title {
+        font-size: 15px;
+    }
+    
+    .settings-arrow {
+        font-size: 12px;
+    }
+}
+
+/* ========== 横屏 + 小屏幕 (iPhone SE横屏 568px) ========== */
+@media (orientation: landscape) and (max-width: 667px) {
+    /* 超小屏幕时隐藏按钮文字,只显示图标 */
+    .ctrl-btn .btn-label {
+        display: none;
+    }
+    
+    /* 图标稍大一些,方便点击 */
+    .ctrl-btn .btn-icon {
+        font-size: 24px;
+    }
+    
+    /* 停止按钮图标 */
+    .ctrl-stop .btn-icon {
+        font-size: 20px;
+    }
+    
+    /* 进一步缩小卡片 */
+    .control-card {
+        padding: 10px;
+    }
+    
+    .control-card h3 {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    /* 缩小按钮 */
+    .ctrl-btn {
+        padding: 8px;
+        min-height: 45px;
+    }
+    
+    .ctrl-stop {
+        min-height: 38px;
+    }
+    
+    /* 缩小状态文本 */
+    .status-text {
+        font-size: 11px;
+        padding: 5px;
+    }
+    
+    /* 缩小grid间距 */
+    .control-grid {
+        gap: 8px;
+    }
+    
+    /* 缩小状态栏 */
+    .status-bar {
+        padding: 6px 12px;
+    }
+    
+    .status-indicator {
+        font-size: 13px;
+    }
+    
+    .status-info {
+        font-size: 10px;
+        gap: 8px;
+    }
+    
+    /* 隐藏标题节省空间 */
+    h1 {
+        font-size: 18px;
+        margin: 8px 0 12px 0;
+    }
+}
+
+/* ========== 横屏 + 中等屏幕优化 (668px-926px) ========== */
+@media (orientation: landscape) and (min-width: 668px) and (max-width: 926px) {
+    /* 这个尺寸保持按钮文字显示,但稍微紧凑 */
+    .control-grid {
+        gap: 10px;
+    }
+    
+    .control-card {
+        padding: 12px;
+    }
+}
+
+/* --- 实感遥控器按钮布局变量 --- */
+:root {
+    --rc-gap: 4px;             /* 严格的 4px 黑色间隙 */
+    --rc-btn-color: #e0e0e0;   
+    --rc-accent-red: #ff3b30;  
+    --rc-panel-h: 120px;       /* 按钮组总高度 */
+}
+
+/* --- 统一实感遥控器布局 --- */
+:root {
+    --rc-gap: 4px;             /* 4px 黑色间隙 */
+    --rc-accent-red: #ff3b30;  
+    --rc-panel-h: 110px;       /* 稍微降低高度适配移动端 */
+}
+
+/* 遥控布局面板 */
+.rc-panel {
+    position: relative;
+    width: 100%;
+    max-width: 240px;
+    height: var(--rc-panel-h);
+    background-color: #000;    /* 核心：黑色背景做间隙 */
+    margin: 10px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.rc-btn {
+    position: absolute;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(180deg, #ffffff 0%, #cecece 100%);
+    transition: all 0.1s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 按下特效 */
+.rc-btn:active {
+    transform: translateY(2px);
+    background: linear-gradient(180deg, #b0b0b0 0%, #e0e0e0 100%);
+    filter: brightness(0.9);
+}
+
+.rc-btn:active .rc-icon {
+    filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.6));
+}
+
+/* 侧边按钮裁切逻辑 */
+.rc-btn-side {
+    width: calc(50% - (var(--rc-gap) / 2));
+    height: 100%;
+}
+
+.rc-btn-left {
+    left: 0;
+    -webkit-mask-image: radial-gradient(circle at calc(100% + 2px) 100%, transparent 54px, black 55px);
+    mask-image: radial-gradient(circle at calc(100% + 2px) 100%, transparent 54px, black 55px);
+}
+
+.rc-btn-right {
+    right: 0;
+    -webkit-mask-image: radial-gradient(circle at -2px 100%, transparent 54px, black 55px);
+    mask-image: radial-gradient(circle at -2px 100%, transparent 54px, black 55px);
+}
+
+/* 中间半圆按钮 */
+.rc-btn-center {
+    width: 100px;
+    height: 50px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50px 50px 0 0;
+    z-index: 10;
+}
+
+.rc-btn-center:active {
+    transform: translateX(-50%) translateY(2px);
+}
+
+/* 图标细节 */
+.rc-icon { transition: all 0.1s; fill: var(--rc-accent-red); }
+
+.rc-arrow-svg { width: 32px; height: 32px; }
+
+/* 图标位置偏移，确保在按钮视觉中心 */
+.rc-btn-left .rc-icon { margin-right: 40px; margin-bottom: 20px; }
+.rc-btn-right .rc-icon { margin-left: 40px; margin-bottom: 20px; }
+
+/* 停止符号与圆点符号 */
+.rc-stop-box {
+    width: 18px; height: 18px;
+    border: 4px solid var(--rc-accent-red);
+    border-radius: 2px;
+}
+.rc-dot-box {
+    width: 16px; height: 16px;
+    background-color: var(--rc-accent-red);
+    border-radius: 50%;
+}
+
+/* 移动端适配：如果屏幕太窄，缩小面板高度 */
+@media (max-width: 480px) {
+    :root { --rc-panel-h: 100px; }
+    .rc-btn-center { width: 90px; height: 45px; }
+}
