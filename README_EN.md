@@ -9,9 +9,10 @@ Online serial terminal (for viewing serial logs):
 https://googlechromelabs.github.io/serial-terminal/
 
 ## Project Images
+![Robo Arm 3](img-3.PNG)
 ![Robo Arm 1](img-1.PNG)
 ![Robo Arm 2](img-2.JPEG)
-![Robo Arm 3](img-3.PNG)
+
 
 ## Key Features
 - Web control panel (LittleFS static pages)

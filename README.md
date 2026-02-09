@@ -8,9 +8,10 @@
 https://googlechromelabs.github.io/serial-terminal/
 
 ## 项目图片
+![Robo Arm 3](img-3.PNG)
 ![Robo Arm 1](img-1.PNG)
 ![Robo Arm 2](img-2.JPEG)
-![Robo Arm 3](img-3.PNG)
+
 
 ## 主要功能
 - Web 控制面板（LittleFS 静态页面）
